@@ -1,11 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
+import { useFirebase } from "../firebase/firebaseContext";
 
 function Signup() {
   const { register, handleSubmit } = useForm();
+  const firebase = useFirebase();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (firebase.isLoggedIn) {
+      navigate("/");
+    }
+  }, [firebase, navigate]);
+
+  const create = async (data) => {
+    const { email, password, name } = data;
+    try {
+      const result = await firebase.signupUser(email, password, name);
+      console.log("Successful", result);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen h-[90vh] flex justify-center items-center">
@@ -23,7 +43,10 @@ function Signup() {
           </Link>
         </p>
 
-        <form className="w-full flex items-center justify-center my-5">
+        <form
+          onSubmit={handleSubmit(create)}
+          className="w-full flex items-center justify-center my-5"
+        >
           <div className="grid w-full max-w-sm items-center gap-4">
             <Input
               label="Full Name"
@@ -56,6 +79,14 @@ function Signup() {
             />
             <Button type="submit" variant="primary" className="w-full">
               Create Account
+            </Button>
+            <Button
+              onClick={firebase.signinWithGoogle}
+              type="submit"
+              variant="destructive"
+              className="w-full"
+            >
+              Sign up with Google
             </Button>
           </div>
         </form>

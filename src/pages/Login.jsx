@@ -1,11 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
+import { useFirebase } from "../firebase/firebaseContext";
 
 function Login() {
   const { register, handleSubmit } = useForm();
+  const firebase = useFirebase();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (firebase.isLoggedIn) {
+      navigate("/");
+    }
+  }, [firebase, navigate]);
+
+  const signIn = async (data) => {
+    const { email, password } = data;
+    try {
+      const result = await firebase.signinUser(email, password);
+      console.log("Successful", result);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen h-[90vh] flex justify-center items-center">
@@ -23,7 +43,10 @@ function Login() {
           </Link>
         </p>
 
-        <form className="w-full flex items-center justify-center my-5">
+        <form
+          onSubmit={handleSubmit(signIn)}
+          className="w-full flex items-center justify-center my-5"
+        >
           <div className="grid w-full max-w-sm items-center gap-4">
             <Input
               label="Email: "
