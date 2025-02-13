@@ -14,31 +14,34 @@ function FeaturedProducts() {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 px-5 gap-y-8 md:gap-x-8">
         {products?.products.slice(0, 8).map((product) => (
-          <Link key={product.id} to={`/productDetails/${product.id}`}>
-            <div className="flex flex-col rounded-lg relative group cursor-pointer h-[20rem]">
+          <div
+            key={product.id}
+            className="flex flex-col rounded-lg relative group cursor-pointer h-[20rem]"
+          >
+            <Link to={`/productDetails/${product.id}`}>
               <div className="border flex justify-center bg-[#f6f7fb] group-hover:bg-[#f7f7f7] rounded-t-lg h-[10rem]">
                 <img src={product?.images[0]} alt={product.name} />
               </div>
+            </Link>
 
-              <div className="text-center h-[8rem] py-3 gap-1 rounded-b-lg group-hover:bg-blue-950 space-y-2 border">
-                <h3 className=" font-semibold group-hover:text-white text-red-500">
-                  {product.title.length > 20
-                    ? `${product.title.substring(0, 20)}...`
-                    : product.title}
-                </h3>
-                <p className="group-hover:text-white text-blue-950 text-sm">
-                  Brand - {product.brand}
-                </p>
-                <p className="group-hover:text-white text-blue-950 text-sm">
-                  ${product.price}
-                </p>
-                <div className="flex items-center justify-center space-x-2 group-hover:text-white">
-                  <IoCartOutline size={20} />
-                  <CiHeart size={20} />
-                </div>
+            <div className="text-center h-[8rem] py-3 gap-1 rounded-b-lg group-hover:bg-blue-950 space-y-2 border">
+              <h3 className=" font-semibold group-hover:text-white text-red-500">
+                {product.title.length > 20
+                  ? `${product.title.substring(0, 20)}...`
+                  : product.title}
+              </h3>
+              <p className="group-hover:text-white text-blue-950 text-sm">
+                Brand - {product.brand}
+              </p>
+              <p className="group-hover:text-white text-blue-950 text-sm">
+                ${product.price}
+              </p>
+              <div className="flex items-center justify-center space-x-2 group-hover:text-white">
+                <IoCartOutline size={20} />
+                <CiHeart size={20} />
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

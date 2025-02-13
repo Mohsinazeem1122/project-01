@@ -6,6 +6,7 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import ProductDetails from "./pages/ProductDetails";
+import Products from "./pages/Products";
 
 const MainLayout = ({ children }) => (
   <>
@@ -25,6 +26,14 @@ function App() {
           element={
             <MainLayout>
               <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <MainLayout>
+              <Products />
             </MainLayout>
           }
         />
