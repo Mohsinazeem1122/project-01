@@ -5,6 +5,7 @@ import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
+import ProductDetails from "./pages/ProductDetails";
 
 const MainLayout = ({ children }) => (
   <>
@@ -24,6 +25,14 @@ function App() {
           element={
             <MainLayout>
               <Home />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/productDetails/:productId"
+          element={
+            <MainLayout>
+              <ProductDetails />
             </MainLayout>
           }
         />
