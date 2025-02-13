@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import ProductDetails from "./pages/ProductDetails";
 import Products from "./pages/Products";
+import Favorite from "./pages/Favorite";
 
 const MainLayout = ({ children }) => (
   <>
@@ -42,6 +43,14 @@ function App() {
           element={
             <MainLayout>
               <ProductDetails />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/favorite"
+          element={
+            <MainLayout>
+              <Favorite />
             </MainLayout>
           }
         />

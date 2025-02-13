@@ -3,9 +3,16 @@ import { useGetProductsData } from "../reactQueryHooks/useProductsData";
 import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleFavorite } from "../features/favoriteSlice";
 
 function FeaturedProducts() {
   const { data: products } = useGetProductsData();
+  const dispatch = useDispatch();
+
+  const handleFavorite = (data) => {
+    dispatch(toggleFavorite(data));
+  };
 
   return (
     <div className="flex flex-col px-8 gap-5 md:gap-10 py-5 xl:px-[12rem] md:py-10">
@@ -38,7 +45,7 @@ function FeaturedProducts() {
               </p>
               <div className="flex items-center justify-center space-x-2 group-hover:text-white">
                 <IoCartOutline size={20} />
-                <CiHeart size={20} />
+                <CiHeart size={20} onClick={() => handleFavorite(product)} />
               </div>
             </div>
           </div>

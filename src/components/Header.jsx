@@ -4,8 +4,11 @@ import { CiHeart } from "react-icons/ci";
 import { IoBag } from "react-icons/io5";
 import { Button } from "../components/ui/button";
 import { useFirebase } from "../firebase/firebaseContext";
+import { useSelector } from "react-redux";
 
 function Header() {
+  const { favoriteProducts } = useSelector((state) => state.favorite);
+
   const firebase = useFirebase();
   const navigate = useNavigate();
   const navItems = [
@@ -29,13 +32,31 @@ function Header() {
   const authItems = [
     {
       id: "favorite",
-      name: <CiHeart />,
+      name: (
+        <div className="relative">
+          <CiHeart size={20} />
+          {favoriteProducts.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+              {favoriteProducts.length}
+            </span>
+          )}
+        </div>
+      ),
       slug: "/favorite",
       active: firebase.isLoggedIn,
     },
     {
       id: "cart",
-      name: <IoBag />,
+      name: (
+        <div className="relative">
+          <IoBag size={20} />
+          {favoriteProducts.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+              {favoriteProducts.length}
+            </span>
+          )}
+        </div>
+      ),
       slug: "/cart",
       active: firebase.isLoggedIn,
     },

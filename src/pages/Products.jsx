@@ -3,9 +3,17 @@ import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { useGetProductsData } from "../reactQueryHooks/useProductsData";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleFavorite } from "../features/favoriteSlice";
 
 function Products() {
   const { data: products } = useGetProductsData();
+  const dispatch = useDispatch();
+
+  const handleFavorite = (data) => {
+    dispatch(toggleFavorite(data));
+  };
+
   return (
     <div className="flex">
       {/* <Categories /> */}
@@ -15,14 +23,6 @@ function Products() {
         </h1>
         <div>
           <input
-            // onChange={(e) => setSearch(e.target.value)}
-            //   onChange={(e) =>
-            //     setSearchParams((prev) => {
-            //       prev.set("q", e.target.value);
-            //       prev.set("skip", 0);
-            //       return prev;
-            //     })
-            //   }
             type="text"
             className="w-full outline-none rounded p-1 border"
             placeholder="Search product..."
@@ -53,7 +53,7 @@ function Products() {
                 </p>
                 <div className="flex items-center justify-center space-x-2 group-hover:text-white">
                   <IoCartOutline size={20} />
-                  <CiHeart size={20} />
+                  <CiHeart size={20} onClick={() => handleFavorite(product)} />
                 </div>
               </div>
             </div>
