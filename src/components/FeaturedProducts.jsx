@@ -3,25 +3,30 @@ import { useGetProductsData } from "../reactQueryHooks/useProductsData";
 import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
 import { useFirebase } from "../firebase/firebaseContext";
 import { toggleCart } from "../features/cartSlice";
+import toast from "react-hot-toast";
 
 function FeaturedProducts() {
   const { data: products } = useGetProductsData();
   const dispatch = useDispatch();
   const { isLoggedIn } = useFirebase(); // Get authentication status
   const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart);
+  const favorite = useSelector((state) => state.favorite);
 
   const handleFavorite = (data) => {
     if (!isLoggedIn) navigate("/login");
     dispatch(toggleFavorite(data));
+    toast.success(favorite.message, { position: "top-right" });
   };
 
   const handleCart = (data) => {
     if (!isLoggedIn) navigate("/login");
     dispatch(toggleCart(data));
+    toast.success(cart.message, { position: "top-right" });
   };
 
   return (

@@ -13,10 +13,12 @@ export const cartSlice = createSlice({
       );
 
       if (isExist) {
+        state.message = "Product added to cart";
         state.cartProducts = state.cartProducts.filter(
           (item) => item.id !== action.payload.id
         );
       } else {
+        state.message = "Product removed from cart";
         state.cartProducts.push(action.payload);
       }
     },

@@ -8,6 +8,7 @@ import Signup from "./pages/Signup";
 import ProductDetails from "./pages/ProductDetails";
 import Products from "./pages/Products";
 import Favorite from "./pages/Favorite";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const MainLayout = ({ children }) => (
   <>
@@ -47,14 +48,6 @@ function App() {
           }
         />
         <Route
-          path="/favorite"
-          element={
-            <MainLayout>
-              <Favorite />
-            </MainLayout>
-          }
-        />
-        <Route
           path="/contact"
           element={
             <MainLayout>
@@ -63,11 +56,23 @@ function App() {
           }
         />
         <Route
+          path="/favorite"
+          element={
+            <ProtectedRoute>
+              <MainLayout>
+                <Favorite />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/cart"
           element={
-            <MainLayout>
-              <Cart />
-            </MainLayout>
+            <ProtectedRoute>
+              <MainLayout>
+                <Cart />
+              </MainLayout>
+            </ProtectedRoute>
           }
         />
         <Route
