@@ -4,6 +4,7 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: {
     cartProducts: [],
+    message: "",
   },
   reducers: {
     toggleCart: (state, action) => {

@@ -5,6 +5,7 @@ import { useGetProductsData } from "../reactQueryHooks/useProductsData";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
+import Categories from "../components/Categories";
 
 function Products() {
   const { data: products } = useGetProductsData();
@@ -16,7 +17,7 @@ function Products() {
 
   return (
     <div className="flex">
-      {/* <Categories /> */}
+      <Categories />
       <div className="flex flex-col px-8 gap-5 md:gap-10 py-5 xl:px-[5rem] md:py-10">
         <h1 className="font-bold text-blue-950 text-xl md:text-3xl">
           E-commerce Accessories & Fashion item

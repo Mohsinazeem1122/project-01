@@ -21,12 +21,12 @@ function Header() {
     {
       name: "Products",
       slug: "/products",
-      active: firebase.isLoggedIn,
+      active: true,
     },
     {
       name: "Contact",
       slug: "/contact",
-      active: firebase.isLoggedIn,
+      active: true,
     },
   ];
 
