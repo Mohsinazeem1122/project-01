@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
+import { toggleCart } from "../features/cartSlice";
 
 function Favorite() {
   const { favoriteProducts } = useSelector((state) => state.favorite);
@@ -11,6 +12,11 @@ function Favorite() {
   const handleFavorite = (data) => {
     dispatch(toggleFavorite(data));
   };
+
+  const handleCart = (data) => {
+    dispatch(toggleCart(data));
+  };
+
   return favoriteProducts.length > 0 ? (
     <div className="mx-28 my-10">
       <div className="flex items-center justify-between">
@@ -35,6 +41,7 @@ function Favorite() {
                   <IoCartOutline
                     className="font-semibold text-blue-900"
                     size={22}
+                    onClick={() => handleCart(item)}
                   />
                   <CiHeart
                     size={22}

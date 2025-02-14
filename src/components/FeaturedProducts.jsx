@@ -2,16 +2,26 @@ import React from "react";
 import { useGetProductsData } from "../reactQueryHooks/useProductsData";
 import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
+import { useFirebase } from "../firebase/firebaseContext";
+import { toggleCart } from "../features/cartSlice";
 
 function FeaturedProducts() {
   const { data: products } = useGetProductsData();
   const dispatch = useDispatch();
+  const { isLoggedIn } = useFirebase(); // Get authentication status
+  const navigate = useNavigate();
 
   const handleFavorite = (data) => {
+    if (!isLoggedIn) navigate("/login");
     dispatch(toggleFavorite(data));
+  };
+
+  const handleCart = (data) => {
+    if (!isLoggedIn) navigate("/login");
+    dispatch(toggleCart(data));
   };
 
   return (
@@ -44,7 +54,7 @@ function FeaturedProducts() {
                 ${product.price}
               </p>
               <div className="flex items-center justify-center space-x-2 group-hover:text-white">
-                <IoCartOutline size={20} />
+                <IoCartOutline size={20} onClick={() => handleCart(product)} />
                 <CiHeart size={20} onClick={() => handleFavorite(product)} />
               </div>
             </div>

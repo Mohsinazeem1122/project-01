@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 function Header() {
   const { favoriteProducts } = useSelector((state) => state.favorite);
+  const { cartProducts } = useSelector((state) => state.cart);
 
   const firebase = useFirebase();
   const navigate = useNavigate();
@@ -50,9 +51,9 @@ function Header() {
       name: (
         <div className="relative">
           <IoBag size={20} />
-          {favoriteProducts.length > 0 && (
+          {cartProducts.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-              {favoriteProducts.length}
+              {cartProducts.length}
             </span>
           )}
         </div>

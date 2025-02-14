@@ -4,7 +4,6 @@ export const favoriteSlice = createSlice({
   name: "favorite",
   initialState: {
     favoriteProducts: [],
-    message: "",
   },
   reducers: {
     toggleFavorite: (state, action) => {
