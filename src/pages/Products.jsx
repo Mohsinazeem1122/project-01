@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
 import Categories from "../components/Categories";
+import { toggleCart } from "../features/cartSlice";
 
 function Products() {
   const { data: products } = useGetProductsData();
@@ -13,6 +14,10 @@ function Products() {
 
   const handleFavorite = (data) => {
     dispatch(toggleFavorite(data));
+  };
+
+  const handleCart = (data) => {
+    dispatch(toggleCart(data));
   };
 
   return (
@@ -53,32 +58,16 @@ function Products() {
                   ${product.price}
                 </p>
                 <div className="flex items-center justify-center space-x-2 group-hover:text-white">
-                  <IoCartOutline size={20} />
+                  <IoCartOutline
+                    size={20}
+                    onClick={() => handleCart(product)}
+                  />
                   <CiHeart size={20} onClick={() => handleFavorite(product)} />
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-        {/* <div className="flex gap-2">
-        <button
-          className="bg-purple-500 px-4 py-1 text-white rounded"
-          onClick={() => {
-            handlePaginate(-limit);
-          }}
-        >
-          Prev
-        </button>
-        <button
-          className="bg-purple-500 px-4 py-1 text-white rounded"
-          onClick={() => {
-            handlePaginate(limit);
-          }}
-        >
-          Next
-        </button>
-      </div> */}
       </div>
     </div>
   );

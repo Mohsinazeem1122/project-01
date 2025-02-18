@@ -1,8 +1,10 @@
 import React from "react";
 import hero from "../assets/hero4.png";
 import { Button } from "@/components/ui/button";
+import { Magnetic } from "./ui/magnetic";
 
 function HeroSection() {
+  const springOptions = { bounce: 0.5 };
   return (
     <div
       style={{ backgroundImage: "url(" + hero + ")" }}
@@ -19,7 +21,26 @@ function HeroSection() {
           odit facilis quam?
         </p>
 
-        <Button>Buy Now</Button>
+        <Magnetic
+          intensity={0.2}
+          springOptions={springOptions}
+          actionArea="global"
+          range={200}
+        >
+          <button
+            type="button"
+            className="bg-stone-950 text-white px-3 py-1.5 rounded-md"
+          >
+            <Magnetic
+              intensity={0.1}
+              springOptions={springOptions}
+              actionArea="global"
+              range={200}
+            >
+              <span>Buy Now</span>
+            </Magnetic>
+          </button>
+        </Magnetic>
       </div>
     </div>
   );

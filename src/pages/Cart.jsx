@@ -1,9 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleCart } from "../features/cartSlice";
+import {
+  toggleCart,
+  increaseQuantity,
+  decreaseQuantity,
+} from "../features/cartSlice";
 
 function Cart() {
-  const { cartProducts, message } = useSelector((state) => state.cart);
+  const { cartProducts, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleRemoveProduct = (data) => {
@@ -57,9 +61,33 @@ function Cart() {
                       </div>
                     </div>
                   </td>
+
                   <td className="p-4">${product?.price}</td>
-                  <td className="p-4">1</td>
-                  <td className="p-4">${product?.price}</td>
+
+                  <td className="p-4 flex items-center space-x-2">
+                    <button
+                      className="bg-blue-200 px-2 rounded"
+                      onClick={() => dispatch(increaseQuantity(product.id))}
+                    >
+                      +
+                    </button>
+                    <input
+                      type="text"
+                      className="w-10 border text-center"
+                      value={product.quantity}
+                      readOnly
+                    />
+                    <button
+                      className="bg-blue-200 px-2 rounded"
+                      onClick={() => dispatch(decreaseQuantity(product.id))}
+                    >
+                      -
+                    </button>
+                  </td>
+
+                  <td className="p-4">
+                    ${(product?.price * product?.quantity).toFixed(2)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -75,11 +103,15 @@ function Cart() {
                 <div className="mb-2 font-semibold text-[#1D3178]">
                   Subtotals:
                 </div>
-                <div className="mb-2 text-[#1D3178]">$219.99</div>
+                <div className="mb-2 text-[#1D3178]">
+                  ${totalPrice.toFixed(2)}
+                </div>
               </div>
               <div className="border-gray-400 border-b flex justify-between mb-5">
                 <div className="mb-2 font-semibold text-[#1D3178]">Totals:</div>
-                <div className="mb-2 text-[#1D3178]">$325.99</div>
+                <div className="mb-2 text-[#1D3178]">
+                  ${totalPrice.toFixed(2)}
+                </div>
               </div>
               <div className="mt-10">
                 <button className="bg-[#19D16F] text-white w-full py-2 rounded-md">
