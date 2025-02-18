@@ -13,10 +13,11 @@ function Products() {
     skip: 0,
     limit: 10,
   });
-  const skip = parseInt(searchParams.get("skip" || 0));
-  const limit = parseInt(searchParams.get("limit" || 0));
+  const skip = parseInt(searchParams.get("skip") || 0);
+  const limit = parseInt(searchParams.get("limit") || 0);
+  const q = searchParams.get("q") || "";
 
-  const { data: products } = useGetPaginatedProducts({ skip, limit });
+  const { data: products } = useGetPaginatedProducts({ skip, limit, q });
 
   const handlePaginate = (move) => {
     setSearchParams((prev) => {
@@ -44,6 +45,13 @@ function Products() {
         </h1>
         <div>
           <input
+            onChange={(e) => {
+              setSearchParams((prev) => {
+                prev.set("q", e.target.value);
+                prev.set("skip", 0);
+                return prev;
+              });
+            }}
             type="text"
             className="w-full outline-none rounded p-1 border"
             placeholder="Search product..."
