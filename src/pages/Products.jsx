@@ -1,15 +1,30 @@
 import React from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
-import { useGetProductsData } from "../reactQueryHooks/useProductsData";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
 import Categories from "../components/Categories";
 import { toggleCart } from "../features/cartSlice";
+import { useGetPaginatedProducts } from "../reactQueryHooks/useGetPaginatedProducts";
 
 function Products() {
-  const { data: products } = useGetProductsData();
+  const [searchParams, setSearchParams] = useSearchParams({
+    skip: 0,
+    limit: 10,
+  });
+  const skip = parseInt(searchParams.get("skip" || 0));
+  const limit = parseInt(searchParams.get("limit" || 0));
+
+  const { data: products } = useGetPaginatedProducts({ skip, limit });
+
+  const handlePaginate = (move) => {
+    setSearchParams((prev) => {
+      prev.set("skip", Math.max(skip + move, 0));
+      return prev;
+    });
+  };
+
   const dispatch = useDispatch();
 
   const handleFavorite = (data) => {
@@ -67,6 +82,21 @@ function Products() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="space-x-4">
+          <button
+            onClick={() => handlePaginate(-limit)}
+            className="bg-blue-500 rounded px-3 py-1 text-white"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => handlePaginate(limit)}
+            className="bg-blue-500 rounded px-3 py-1 text-white"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
