@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoCartOutline } from "react-icons/io5";
 import { Link, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleFavorite } from "../features/favoriteSlice";
-import Categories from "../components/Categories";
 import { toggleCart } from "../features/cartSlice";
 import { useGetPaginatedProducts } from "../reactQueryHooks/useGetPaginatedProducts";
+import debounce from "lodash.debounce";
+import { useGetCategoriesData } from "../reactQueryHooks/useCategoriesData";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -16,8 +17,20 @@ function Products() {
   const skip = parseInt(searchParams.get("skip") || 0);
   const limit = parseInt(searchParams.get("limit") || 0);
   const q = searchParams.get("q") || "";
+  const category = searchParams.get("category") || "";
 
-  const { data: products } = useGetPaginatedProducts({ skip, limit, q });
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("category") || ""
+  );
+
+  const { data: categories } = useGetCategoriesData();
+
+  const { data: products } = useGetPaginatedProducts({
+    skip,
+    limit,
+    q,
+    category,
+  });
 
   const handlePaginate = (move) => {
     setSearchParams((prev) => {
@@ -38,20 +51,56 @@ function Products() {
 
   return (
     <div className="flex">
-      <Categories />
+      <div className="mt-[11rem] ml-10 w-full max-w-40">
+        <h1 className="text-xl font-semibold text-blue-950 underline underline-offset-[5px] mb-3">
+          Categories
+        </h1>
+        <div>
+          {categories?.map((category, index) => (
+            <div key={index} className="flex items-center space-x-2 ">
+              <input
+                type="checkbox"
+                value={category.name}
+                checked={selectedCategory === category.name}
+                onChange={(e) => {
+                  const newCategory = e.target.value;
+                  setSelectedCategory((prev) =>
+                    prev === newCategory ? "" : newCategory
+                  );
+
+                  setSearchParams((prev) => {
+                    prev.set("skip", 0);
+                    prev.delete("q");
+
+                    if (prev.get("category") === newCategory) {
+                      prev.delete("category");
+                    } else {
+                      prev.set("category", newCategory);
+                    }
+
+                    return prev;
+                  });
+                }}
+              />
+              <p className="text-gray-500">{category?.name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="flex flex-col px-8 gap-5 md:gap-10 py-5 xl:px-[5rem] md:py-10">
         <h1 className="font-bold text-blue-950 text-xl md:text-3xl">
           E-commerce Accessories & Fashion item
         </h1>
         <div>
           <input
-            onChange={(e) => {
+            onChange={debounce((e) => {
               setSearchParams((prev) => {
                 prev.set("q", e.target.value);
                 prev.set("skip", 0);
                 return prev;
               });
-            }}
+            }, 1000)}
             type="text"
             className="w-full outline-none rounded p-1 border"
             placeholder="Search product..."
